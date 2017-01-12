@@ -1,12 +1,15 @@
-/**
- * Created by user on 12.01.2017.
- */
 var http = require('http');
-var static = require('node-static');
-var file = new static.Server('.');
+var fs = require('fs');
 
-http.createServer(function(req, res) {
-    file.serve(req, res);
-}).listen(8080);
+const PORT=8080;
 
-console.log('Server running on port 8080. Just for example');
+fs.readFile('../index.html', function (err, html) {
+
+    if (err) throw err;
+
+    http.createServer(function(request, response) {
+        response.writeHeader(200, {"Content-Type": "text/html"});
+        response.write(html);
+        response.end();
+    }).listen(PORT);
+});
